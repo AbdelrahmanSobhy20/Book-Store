@@ -129,12 +129,45 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       trailing: IconButton(
-                        onPressed: ()async {
-                          if (store.id != null) {
-                            await BookProvider.instance
-                                .delete(store.id!);
-                          }
-                          setState(() {});
+                        onPressed: () {
+                          showDialog(context: context, builder: ((BuildContext context){
+                            return Expanded(child:
+                            AlertDialog(
+                              title: const Text('Delete Book' , style: TextStyle(
+                                fontSize: 25,
+                              ),),
+                              content: const Text('Are you sure you want to delete this book?' , style: TextStyle(
+                                fontSize: 20,
+                              ),),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Cancel' , style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 25,
+                                  ),),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    if (store.id != null) {
+                                      await BookProvider.instance
+                                          .delete(store.id!);
+                                    }
+                                    setState(() {});
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('Yes' , style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 25,
+                                  ),),
+                                ),
+                              ],
+                            ),
+                            );
+                            }));
+
                         },
                         icon: const Icon(Icons.delete_outline_sharp , size: 40,),
                       ),
